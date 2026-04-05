@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENCY 교육 정보</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ency:#1A4FC4;
+  --ency-lt:#EEF3FD;
+  --nav:#1A1F2E;
+  --t1:#15192A;
+  --t2:#5A6175;
+  --t3:#9DA6BC;
+  --border:#E0E4EE;
+  --bg:#F7F8FB;
+  --r:8px;
+}
+
+html,body{
+  font-family:'Pretendard',-apple-system,sans-serif;
+  font-size:15px;
+  color:var(--t1);
+  background:#fff;
+  line-height:1.6;
+}
+
+/* 섹션 공통 */
+.section{
+  padding:32px 20px;
+  border-bottom:1px solid var(--border);
+}
+.section:last-child{border-bottom:none}
+
+.sec-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:4px;
+}
+.sec-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--ency);color:#fff;font-size:15px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.sec-title{font-size:18px;font-weight:700;color:var(--t1)}
+.sec-sub{font-size:13px;color:var(--t3);margin-bottom:20px;padding-left:42px}
+
+/* 커리큘럼 */
+.course-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;
+}
+.course-card{border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden}
+.course-top{padding:12px 14px;color:#fff}
+.course-top .level{
+  font-size:10px;font-weight:700;background:rgba(255,255,255,.22);
+  padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px;
+}
+.course-top .name{font-size:14px;font-weight:700;line-height:1.35}
+.course-body{padding:10px 14px;font-size:13px;color:var(--t2);line-height:1.6}
+
+.curri-table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;font-size:13px}
+.curri-table thead tr{background:var(--nav);color:#fff}
+.curri-table thead th{padding:11px 12px;font-weight:600;text-align:left;font-size:13px}
+.curri-table tbody tr{border-bottom:1px solid var(--border)}
+.curri-table tbody tr:last-child{border-bottom:none}
+.curri-table tbody tr:nth-child(even){background:#FAFBFD}
+.curri-table td{padding:9px 12px;vertical-align:middle}
+.step-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:50px;padding:3px 0;border-radius:4px;font-size:10px;font-weight:700;
+}
+.method-tag{
+  display:inline-block;padding:2px 7px;border-radius:10px;
+  font-size:10px;font-weight:600;margin:1px 0;
+}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.faq-q{
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:13px 16px;background:#fff;border:none;cursor:pointer;
+  text-align:left;font-family:'Pretendard',-apple-system,sans-serif;
+  transition:background .15s;
+}
+.faq-q:hover{background:#FAFBFD}
+.faq-q.open{background:var(--ency-lt)}
+.faq-badge{
+  width:24px;height:24px;border-radius:50%;background:var(--ency);color:#fff;
+  font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.faq-q-text{flex:1;font-size:14px;font-weight:600;color:var(--t1)}
+.faq-arrow{font-size:12px;color:var(--t3);transition:transform .2s;flex-shrink:0}
+.faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--ency)}
+.faq-a{
+  display:none;padding:14px 16px 16px 52px;
+  font-size:14px;color:var(--t2);line-height:1.75;
+  border-top:1px solid var(--border);background:#fff;
+}
+.faq-a.open{display:block}
+
+/* 캘린더 */
+.cal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.cal-nav-btn{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--border);background:#fff;
+  cursor:pointer;font-size:16px;color:var(--t2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.cal-nav-btn:hover{border-color:var(--ency);color:var(--ency)}
+.cal-month{font-size:16px;font-weight:700;color:var(--t1)}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{
+  text-align:center;font-size:11px;font-weight:700;
+  color:var(--t3);padding:5px 0;
+}
+.cal-dow:first-child{color:#E53E3E}
+.cal-dow:last-child{color:#4A90D9}
+
+.cal-day{
+  min-height:52px;border-radius:5px;padding:4px 5px;
+  font-size:11px;background:#F5F7FC;position:relative;
+}
+.cal-day.empty{background:transparent}
+.cal-day.today .day-num{
+  background:var(--ency);color:#fff;width:20px;height:20px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+}
+.day-num{font-size:11px;font-weight:500;margin-bottom:2px;color:var(--t1)}
+.cal-day:nth-child(7n+1) .day-num{color:#E53E3E}
+.cal-day:nth-child(7n) .day-num{color:#4A90D9}
+.cal-event{
+  font-size:9px;font-weight:600;padding:1px 4px;border-radius:3px;
+  margin-bottom:1px;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.cal-legend{
+  display:flex;gap:12px;flex-wrap:wrap;
+  margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2)}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* 교육 기본 정보 */
+.info-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+}
+.info-cell{
+  background:#fff;padding:16px 18px;
+  display:flex;flex-direction:column;gap:5px;
+}
+.info-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+.info-value{font-size:14px;font-weight:600;color:var(--t1)}
+.info-value.accent{color:var(--ency);font-size:18px}
+
+/* 교육장 카드 */
+.loc-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.loc-card{
+  border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+}
+.loc-img{
+  height:90px;background:#CDD3E2;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#8A93AA;letter-spacing:.3px;
+}
+.loc-map{
+  height:44px;background:#D8E4F5;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#4A70C8;cursor:pointer;
+  font-weight:600;gap:4px;
+  border-top:1px solid var(--border);
+  transition:background .15s;
+}
+.loc-map:hover{background:#C8D8EF}
+.loc-body{padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.loc-name{font-size:14px;font-weight:700;color:var(--t1)}
+.loc-tag{
+  display:inline-block;font-size:11px;font-weight:600;
+  padding:2px 9px;border-radius:10px;
+  background:var(--ency-lt);color:var(--ency);
+  align-self:flex-start;margin-bottom:2px;
+}
+.loc-addr{font-size:12px;color:var(--t2);line-height:1.5}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════
+     1. 커리큘럼
+═══════════════════════ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-icon">📋</div>
+    <span class="sec-title">교육 커리큘럼</span>
+  </div>
+  <p class="sec-sub">과정별 내용을 확인하고 수준에 맞게 선택하세요.</p>
+
+  <div class="course-grid">
+    <div class="course-card">
+      <div class="course-top" style="background:#3A6FE8">
+        <div class="level">초급</div>
+        <div class="name">Ency 초급 교육<br>*2.5D 가공</div>
+      </div>
+      <div class="course-body">2D 및 2.5D 툴패스, 선삭과 라운 CAM 기초 교육</div>
+    </div>
+    <div class="course-card">
+      <div class="course-top" style="background:var(--ency)">
+        <div class="level">중급</div>
+        <div class="name">Ency 중급 교육<br>*3D 밀링</div>
+      </div>
+      <div class="course-body">복잡한 3D 형상 밀링 및 NC 데이터 관리를 통한 고품질 가공 능력 향상</div>
+    </div>
+    <div class="course-card">
+      <div class="course-top" style="background:#6B47C8">
+        <div class="level">중급</div>
+        <div class="name">Ency 중급 교육<br>*스위스턴</div>
+      </div>
+      <div class="course-body">실무 중심 단면 CNC 라우터 설정 및 다양한 CAM 기능 활용</div>
+    </div>
+  </div>
+
+  <table class="curri-table">
+    <thead>
+      <tr>
+        <th style="width:66px">단계</th>
+        <th style="width:68px">수업명</th>
+        <th>교육 기능</th>
+        <th style="width:100px">교육방식</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="step-badge" style="background:#EEF3FD;color:var(--ency)">1단계</span></td>
+        <td style="font-weight:600">기초</td>
+        <td>설계 / UI 기초</td>
+        <td><span class="method-tag" style="background:#F0F4FF;color:#4A70C8">준비중</span></td>
+      </tr>
+      <tr>
+        <td rowspan="3"><span class="step-badge" style="background:#F3EEFF;color:#6B47C8">2단계</span></td>
+        <td rowspan="3" style="font-weight:600">중급</td>
+        <td>CAM 가공 기초</td>
+        <td><span class="method-tag" style="background:#F0F4FF;color:#4A70C8">준비중</span></td>
+      </tr>
+      <tr>
+        <td>2축 선반</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td>G코드 시뮬레이션 (Ency Tuner) 및 CNC 기반 협업 (Ency Cloud)</td>
+        <td>
+          <span class="method-tag" style="background:#EEF3FD;color:var(--ency)">온라인</span><br>
+          <span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3"><span class="step-badge" style="background:#EDFAF2;color:#1A7A3C">3단계</span></td>
+        <td rowspan="3" style="font-weight:600">중급</td>
+        <td>4축 밀링 (스위스 타입 포함)</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td>5축 밀링</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td>5축 턴밀</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td rowspan="3"><span class="step-badge" style="background:#FFF3E0;color:#C05B05">4단계</span></td>
+        <td rowspan="3" style="font-weight:600">고급</td>
+        <td>3D 가공 실무 적용</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td>5축 가공 실무 적용</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+      <tr>
+        <td>고급 업무 매케</td>
+        <td><span class="method-tag" style="background:#EEF3FD;color:var(--ency)">오프라인</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ═══════════════════════
+     2. FAQ
+═══════════════════════ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-icon">💬</div>
+    <span class="sec-title">자주 묻는 질문</span>
+  </div>
+  <p class="sec-sub">교육 수강 전 궁금한 점을 확인하세요.</p>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-badge">Q1</span>
+        <span class="faq-q-text">어떤 장비에 적용할 수 있나요?</span>
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">ENCY CAM은 MCT(머시닝센터), 선반, 턴밀, 스위스 타입 등 대부분의 CNC 장비와 호환됩니다. 로봇 가공 장비에도 적용 가능합니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-badge">Q2</span>
+        <span class="faq-q-text">어떤 가공 방식을 배울 수 있나요?</span>
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">3D 밀링, 선반(Lathe), 턴밀(Turn-Mill), 5축 가공, 로봇 가공 등 과정에 따라 다양한 가공 방식을 배울 수 있습니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-badge">Q3</span>
+        <span class="faq-q-text">CAM을 처음 접하는 초보자도 수강할 수 있나요?</span>
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">네, 가능합니다. 입문 과정은 CAM 경험이 없는 분들을 위해 설계되었으며, 소프트웨어 설치부터 기초 공구 경로 생성까지 차근차근 안내합니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-badge">Q4</span>
+        <span class="faq-q-text">교육 수료 후 바로 현장에서 사용할 수 있나요?</span>
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">교육 커리큘럼 자체가 실제 현장 가공 사례를 기반으로 구성되어 있습니다. 수료 후 즉시 실무 적용이 가능하도록 실습 비중을 높게 운영합니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-badge">Q5</span>
+        <span class="faq-q-text">오프라인 실습과 온라인 교육을 함께 들을 수 있나요?</span>
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">온라인 교육으로 기초 이론을 먼저 익히고, 오프라인 정기교육에서 실습을 진행하는 방식으로 병행 수강을 권장합니다.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════
+     3. 교육 일정
+═══════════════════════ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-icon">📅</div>
+    <span class="sec-title">교육 일정</span>
+  </div>
+  <p class="sec-sub">월별 교육 일정을 확인하고 신청하세요.</p>
+
+  <div class="cal-header">
+    <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+    <span class="cal-month" id="cal-month-label"></span>
+    <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="cal-grid">
+    <div class="cal-dow">일</div><div class="cal-dow">월</div>
+    <div class="cal-dow">화</div><div class="cal-dow">수</div>
+    <div class="cal-dow">목</div><div class="cal-dow">금</div>
+    <div class="cal-dow">토</div>
+  </div>
+  <div class="cal-grid" id="cal-body" style="margin-top:2px"></div>
+
+  <div class="cal-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#3A6FE8"></div>초급 (2.5D 가공)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ency)"></div>중급 (3D 밀링)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6B47C8"></div>중급 (스위스턴)</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════
+     4. 교육 기본 정보
+═══════════════════════ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-icon">ℹ️</div>
+    <span class="sec-title">교육 기본 정보</span>
+  </div>
+  <p class="sec-sub">수강 전 꼭 확인해 주세요.</p>
+
+  <div class="info-grid">
+    <div class="info-cell">
+      <span class="info-label">교육 장소</span>
+      <span class="info-value">YC 서비스나라</span>
+      <span style="font-size:11px;color:var(--t3)">서울특별시 성동구 면명9길 10, B-1</span>
+    </div>
+    <div class="info-cell">
+      <span class="info-label">교육 대상</span>
+      <span class="info-value">ENCY CAM에 관심 있는 누구나</span>
+      <span style="font-size:11px;color:var(--t3)">비IT 계열도 수강 가능</span>
+    </div>
+    <div class="info-cell">
+      <span class="info-label">교육 비용</span>
+      <span class="info-value accent">무료</span>
+      <span style="font-size:11px;color:var(--t3)">전액 무료 운영</span>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:5px">
+    <span style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:2px">비고</span>
+    <span>· 중식 단체 도시락 제공</span>
+    <span>· 개인 노트북 지참 불필요 (업체 경우 유료 대여 가능 *사전문의 필수)</span>
+    <span>· 교육 문의: Ency 사업부 조정혜 — 010-6679-7837</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════
+     5. 교육장 안내
+═══════════════════════ -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-icon">📍</div>
+    <span class="sec-title">교육장 안내</span>
+  </div>
+  <p class="sec-sub">전국 4개 교육장에서 수강하실 수 있습니다.</p>
+
+  <div class="loc-grid">
+
+    <div class="loc-card">
+      <div class="loc-img">교육장 사진</div>
+      <div class="loc-body">
+        <span class="loc-tag">서울</span>
+        <span class="loc-name">YC College</span>
+        <span class="loc-addr">서울특별시 성동구 마조로3길 10</span>
+      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/서울특별시 성동구 마조로3길 10','_blank')">
+        🗺 지도 보기
+      </div>
+    </div>
+
+    <div class="loc-card">
+      <div class="loc-img">교육장 사진</div>
+      <div class="loc-body">
+        <span class="loc-tag">화성</span>
+        <span class="loc-name">YC Factory</span>
+        <span class="loc-addr">경기도 화성시 정남면 귀래리 461</span>
+      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경기도 화성시 정남면 귀래리 461','_blank')">
+        🗺 지도 보기
+      </div>
+    </div>
+
+    <div class="loc-card">
+      <div class="loc-img">교육장 사진</div>
+      <div class="loc-body">
+        <span class="loc-tag">천안</span>
+        <span class="loc-name">천안 교육장</span>
+        <span class="loc-addr">천안시 서북구 천안천4길 32</span>
+      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/천안시 서북구 천안천4길 32','_blank')">
+        🗺 지도 보기
+      </div>
+    </div>
+
+    <div class="loc-card">
+      <div class="loc-img">교육장 사진</div>
+      <div class="loc-body">
+        <span class="loc-tag">창원</span>
+        <span class="loc-name">창원 교육장</span>
+        <span class="loc-addr">경상남도 창원시 성산구 용지로169번길 11-31, 3층</span>
+      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경상남도 창원시 성산구 용지로169번길 11-31','_blank')">
+        🗺 지도 보기
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+/* FAQ 아코디언 */
+function toggleFaq(btn) {
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  if (!isOpen) {
+    btn.classList.add('open');
+    btn.nextElementSibling.classList.add('open');
+  }
+}
+
+/* 캘린더 */
+const EVENTS = [
+  { date:'2026-04-07', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
+  { date:'2026-04-08', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
+  { date:'2026-04-14', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'YC College (서울)' },
+  { date:'2026-04-15', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'YC College (서울)' },
+  { date:'2026-04-21', title:'중급 스위스턴',  color:'#6B47C8', loc:'YC Factory (화성)' },
+  { date:'2026-04-22', title:'중급 스위스턴',  color:'#6B47C8', loc:'YC Factory (화성)' },
+  { date:'2026-05-12', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
+  { date:'2026-05-13', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
+  { date:'2026-05-19', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'천안 교육장' },
+  { date:'2026-05-26', title:'중급 스위스턴',  color:'#6B47C8', loc:'창원 교육장' },
+];
+
+const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+let cy, cm;
+
+function initCalendar() {
+  const now = new Date();
+  cy = now.getFullYear(); cm = now.getMonth();
+  renderCalendar();
+}
+
+function changeMonth(d) {
+  cm += d;
+  if (cm > 11) { cm = 0; cy++; }
+  if (cm < 0)  { cm = 11; cy--; }
+  renderCalendar();
+}
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function renderCalendar() {
+  document.getElementById('cal-month-label').textContent = `${cy}년 ${MONTHS[cm]}`;
+  const today = new Date();
+  const firstDay = new Date(cy, cm, 1).getDay();
+  const daysInMonth = new Date(cy, cm+1, 0).getDate();
+  const ms = `${cy}-${pad(cm+1)}`;
+  const mev = EVENTS.filter(e => e.date.startsWith(ms));
+
+  let html = '';
+  for (let i=0;i<firstDay;i++) html += `<div class="cal-day empty"></div>`;
+  for (let d=1;d<=daysInMonth;d++) {
+    const ds = `${cy}-${pad(cm+1)}-${pad(d)}`;
+    const isToday = today.getFullYear()===cy && today.getMonth()===cm && today.getDate()===d;
+    const evs = mev.filter(e=>e.date===ds);
+    const evHtml = evs.map(e=>`<div class="cal-event" style="background:${e.color}22;color:${e.color}">${e.title}</div>`).join('');
+    html += `<div class="cal-day${isToday?' today':''}"><div class="day-num">${d}</div>${evHtml}</div>`;
+  }
+  document.getElementById('cal-body').innerHTML = html;
+}
+
+initCalendar();
+</script>
+</body>
+</html>
