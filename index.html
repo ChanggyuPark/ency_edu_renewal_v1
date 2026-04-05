@@ -196,7 +196,59 @@ html,body{
 }
 .loc-addr{font-size:12px;color:var(--t2);line-height:1.5}
 
-/* CTA */
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+
+  /* 교육장 — 2열 */
+  .loc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 커리큘럼 과정 카드 — 1열 */
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 커리큘럼 테이블 — 교육방식 컬럼 숨김 + 폰트 축소 */
+  .curri-table {
+    font-size: 11px;
+  }
+  .curri-table thead th:last-child,
+  .curri-table td:last-child {
+    display: none;
+  }
+  .curri-table th,
+  .curri-table td {
+    padding: 7px 8px;
+  }
+
+  /* 교육 기본 정보 — 1열 */
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 섹션 패딩 축소 */
+  .section {
+    padding: 24px 16px;
+  }
+
+  /* CTA 타이틀 크기 축소 */
+  .cta-title {
+    font-size: 24px;
+  }
+
+  /* CTA 버튼 세로 배치 */
+  .cta-btns {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cta-btn-primary,
+  .cta-btn-secondary {
+    width: 100%;
+    max-width: 320px;
+  }
+
+}
 .cta-section{
   padding:52px 20px;
   background:#fff;
@@ -620,6 +672,11 @@ function renderCalendar() {
 initCalendar();
 window.addEventListener('load', sendHeight);
 window.addEventListener('resize', sendHeight);
+
+// ResizeObserver로 콘텐츠 높이 변화 감지 (FAQ 열림/닫힘 등)
+if (window.ResizeObserver) {
+  new ResizeObserver(() => sendHeight()).observe(document.body);
+}
 </script>
 </body>
 </html>
