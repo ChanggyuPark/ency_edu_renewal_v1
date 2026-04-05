@@ -18,6 +18,7 @@
   --border:#E0E4EE;
   --bg:#F7F8FB;
   --r:8px;
+  --grad:linear-gradient(135deg,#03cc9c,#2d56d2);
 }
 
 html,body{
@@ -170,9 +171,7 @@ html,body{
 .loc-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
 }
-.loc-card{
-  border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
-}
+.loc-card{border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .loc-img{
   height:180px;background:#CDD3E2;
   display:flex;align-items:center;justify-content:center;
@@ -197,6 +196,56 @@ html,body{
 }
 .loc-addr{font-size:12px;color:var(--t2);line-height:1.5}
 
+/* CTA */
+.cta-section{
+  padding:52px 20px;
+  background:#fff;
+  text-align:center;
+  position:relative;
+}
+/* 상단 그라데이션 구분선 */
+.cta-section::before{
+  content:'';
+  position:absolute;top:0;left:20px;right:20px;
+  height:3px;border-radius:2px;
+  background:var(--grad);
+}
+.cta-title{
+  font-size:32px;font-weight:800;
+  margin-bottom:12px;letter-spacing:-.5px;
+  line-height:1.2;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.cta-sub{
+  font-size:15px;color:var(--t2);
+  margin-bottom:32px;
+}
+.cta-btns{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.cta-btn-primary{
+  padding:14px 28px;border-radius:50px;
+  background:var(--grad);
+  font-size:15px;font-weight:700;color:#fff;
+  border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(3,204,156,.25);
+  transition:transform .15s, box-shadow .15s;
+  font-family:'Pretendard',-apple-system,sans-serif;
+}
+.cta-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(3,204,156,.35)}
+.cta-btn-secondary{
+  padding:14px 28px;border-radius:50px;
+  background:#fff;
+  border:1.5px solid #E0E4EE;
+  font-size:15px;font-weight:600;color:var(--t2);
+  cursor:pointer;
+  transition:border-color .15s, color .15s, transform .15s;
+  font-family:'Pretendard',-apple-system,sans-serif;
+}
+.cta-btn-secondary:hover{border-color:#03cc9c;color:#03cc9c;transform:translateY(-2px)}
 </style>
 </head>
 <body>
@@ -425,7 +474,7 @@ html,body{
   <div style="margin-top:12px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:5px">
     <span style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:2px">비고</span>
     <span>· 개인 노트북 지참 필수 (업체 경우 유료 대여 가능 *사전문의 필수)</span>
-    <span>· 교육 문의: Ency 사업부 | 조정혜 매니저 | 010-6679-7837 | jhcho@ycgroup.co.kr </span>
+    <span>· 교육 문의: Ency 사업부 | 조정혜 매니저 | 010-6679-7837 | jhcho@ycgroup.co.kr</span>
   </div>
 </div>
 
@@ -441,7 +490,6 @@ html,body{
   <p class="sec-sub">전국 4개 교육장에서 수강하실 수 있습니다.</p>
 
   <div class="loc-grid">
-
     <div class="loc-card">
       <div class="loc-img" style="background-image:url('https://i.imgur.com/859y0rV.jpeg');background-size:cover;background-position:center"></div>
       <div class="loc-body">
@@ -449,11 +497,8 @@ html,body{
         <span class="loc-name">YC College</span>
         <span class="loc-addr">서울특별시 성동구 마조로3길 10, 1F YC College</span>
       </div>
-      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/서울특별시 성동구 마조로3길 10','_blank')">
-        🗺 지도 보기
-      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/서울특별시 성동구 마조로3길 10','_blank')">🗺 지도 보기</div>
     </div>
-
     <div class="loc-card">
       <div class="loc-img" style="background-image:url('https://i.imgur.com/XSmsqgb.jpeg');background-size:cover;background-position:center"></div>
       <div class="loc-body">
@@ -461,11 +506,8 @@ html,body{
         <span class="loc-name">YC Factory</span>
         <span class="loc-addr">경기도 화성시 정남면 귀래리 461, YC Factory</span>
       </div>
-      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경기도 화성시 정남면 귀래리 461','_blank')">
-        🗺 지도 보기
-      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경기도 화성시 정남면 귀래리 461','_blank')">🗺 지도 보기</div>
     </div>
-
     <div class="loc-card">
       <div class="loc-img" style="background-image:url('https://i.imgur.com/dTJA96R.jpeg');background-size:cover;background-position:center"></div>
       <div class="loc-body">
@@ -473,11 +515,8 @@ html,body{
         <span class="loc-name">천안 교육장</span>
         <span class="loc-addr">충청남도 천안시 서북구 천안천4길 32</span>
       </div>
-      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/천안시 서북구 천안천4길 32','_blank')">
-        🗺 지도 보기
-      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/천안시 서북구 천안천4길 32','_blank')">🗺 지도 보기</div>
     </div>
-
     <div class="loc-card">
       <div class="loc-img" style="background-image:url('https://i.imgur.com/zydLWvU.jpeg');background-size:cover;background-position:center"></div>
       <div class="loc-body">
@@ -485,17 +524,35 @@ html,body{
         <span class="loc-name">창원 교육장</span>
         <span class="loc-addr">경상남도 창원시 성산구 용지로169번길 11-31, 3층</span>
       </div>
-      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경상남도 창원시 성산구 용지로169번길 11-31','_blank')">
-        🗺 지도 보기
-      </div>
+      <div class="loc-map" onclick="window.open('https://map.kakao.com/link/search/경상남도 창원시 성산구 용지로169번길 11-31','_blank')">🗺 지도 보기</div>
     </div>
+  </div>
+</div>
 
+
+<!-- ═══════════════════════
+     6. CTA
+═══════════════════════ -->
+<div class="cta-section">
+  <div class="cta-title">지금 바로 시작하세요</div>
+  <div class="cta-sub">궁금한 점은 언제든 문의해 주세요. 담당자가 빠르게 답변드립니다.</div>
+  <div class="cta-btns">
+    <button class="cta-btn-primary" onclick="window.open('https://forms.monday.com/forms/5cb713c9f6a936ab378b360e04ccd865?r=use1','_blank')">
+      수강 신청 문의하기
+    </button>
+    <button class="cta-btn-secondary" onclick="window.open('https://wkf.ms/4fqiCDM','_blank')">
+      무료 체험판 신청
+    </button>
   </div>
 </div>
 
 
 <script>
 /* FAQ 아코디언 */
+function sendHeight() {
+  window.parent.postMessage({ type:'iframeHeight', height: document.documentElement.scrollHeight }, '*');
+}
+
 function toggleFaq(btn) {
   const isOpen = btn.classList.contains('open');
   document.querySelectorAll('.faq-q').forEach(b => b.classList.remove('open'));
@@ -504,20 +561,21 @@ function toggleFaq(btn) {
     btn.classList.add('open');
     btn.nextElementSibling.classList.add('open');
   }
+  setTimeout(sendHeight, 320);
 }
 
 /* 캘린더 */
 const EVENTS = [
-  { date:'2026-04-07', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
-  { date:'2026-04-08', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
-  { date:'2026-04-14', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'YC College (서울)' },
-  { date:'2026-04-15', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'YC College (서울)' },
-  { date:'2026-04-21', title:'중급 스위스턴',  color:'#6B47C8', loc:'YC Factory (화성)' },
-  { date:'2026-04-22', title:'중급 스위스턴',  color:'#6B47C8', loc:'YC Factory (화성)' },
-  { date:'2026-05-12', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
-  { date:'2026-05-13', title:'초급 2.5D 가공', color:'#3A6FE8', loc:'YC College (서울)' },
-  { date:'2026-05-19', title:'중급 3D 밀링',   color:'#1A4FC4', loc:'천안 교육장' },
-  { date:'2026-05-26', title:'중급 스위스턴',  color:'#6B47C8', loc:'창원 교육장' },
+  { date:'2026-04-07', title:'초급 2.5D 가공', color:'#3A6FE8' },
+  { date:'2026-04-08', title:'초급 2.5D 가공', color:'#3A6FE8' },
+  { date:'2026-04-14', title:'중급 3D 밀링',   color:'#1A4FC4' },
+  { date:'2026-04-15', title:'중급 3D 밀링',   color:'#1A4FC4' },
+  { date:'2026-04-21', title:'중급 스위스턴',  color:'#6B47C8' },
+  { date:'2026-04-22', title:'중급 스위스턴',  color:'#6B47C8' },
+  { date:'2026-05-12', title:'초급 2.5D 가공', color:'#3A6FE8' },
+  { date:'2026-05-13', title:'초급 2.5D 가공', color:'#3A6FE8' },
+  { date:'2026-05-19', title:'중급 3D 밀링',   color:'#1A4FC4' },
+  { date:'2026-05-26', title:'중급 스위스턴',  color:'#6B47C8' },
 ];
 
 const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
@@ -534,6 +592,7 @@ function changeMonth(d) {
   if (cm > 11) { cm = 0; cy++; }
   if (cm < 0)  { cm = 11; cy--; }
   renderCalendar();
+  setTimeout(sendHeight, 100);
 }
 
 function pad(n){ return String(n).padStart(2,'0'); }
@@ -559,6 +618,8 @@ function renderCalendar() {
 }
 
 initCalendar();
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
 </script>
 </body>
 </html>
