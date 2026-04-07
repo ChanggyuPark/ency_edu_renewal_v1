@@ -526,7 +526,7 @@ html,body{
   <div style="margin-top:12px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;color:var(--t2);display:flex;flex-direction:column;gap:5px">
     <span style="font-size:11px;font-weight:700;color:var(--t1);margin-bottom:2px">비고</span>
     <span>· 개인 노트북 지참 필수 (업체 경우 유료 대여 가능 *사전문의 필수)</span>
-    <span>· 교육 문의: Ency 사업부 | 조정혜 매니저 | 010-6679-7837 | jhcho@ycgroup.co.kr</span>
+    <span>· 교육 문의: Ency 사업부 | 조정혜 매니저 | 010-6679-7837 | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bcd6d4dfd4d3fcc5dfdbced3c9cc92dfd392d7ce">[email&#160;protected]</a></span>
   </div>
 </div>
 
@@ -599,7 +599,7 @@ html,body{
 </div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* FAQ 아코디언 */
 function sendHeight() {
   window.parent.postMessage({ type:'iframeHeight', height: document.documentElement.scrollHeight }, '*');
@@ -616,67 +616,111 @@ function toggleFaq(btn) {
   setTimeout(sendHeight, 320);
 }
 
-/* 캘린더 */
-const EVENTS = [
-  { date:'2026-04-07', title:'초급 2.5D 가공', color:'#3A6FE8' },
-  { date:'2026-04-08', title:'초급 2.5D 가공', color:'#3A6FE8' },
-  { date:'2026-04-14', title:'중급 3D 밀링',   color:'#1A4FC4' },
-  { date:'2026-04-15', title:'중급 3D 밀링',   color:'#1A4FC4' },
-  { date:'2026-04-21', title:'중급 스위스턴',  color:'#6B47C8' },
-  { date:'2026-04-22', title:'중급 스위스턴',  color:'#6B47C8' },
-  { date:'2026-05-12', title:'초급 2.5D 가공', color:'#3A6FE8' },
-  { date:'2026-05-13', title:'초급 2.5D 가공', color:'#3A6FE8' },
-  { date:'2026-05-19', title:'중급 3D 밀링',   color:'#1A4FC4' },
-  { date:'2026-05-26', title:'중급 스위스턴',  color:'#6B47C8' },
-];
+/* ─── Google Calendar 연동 ─── */
+const GCAL_API_KEY   = 'AIzaSyBA2Mc3O8VvGy9An6N0lAlVJVXyVZx1saE';
+const GCAL_CAL_ID    = '8c95ebc71dd122c5584b1ed8f8d4dbaa40b0fdf89120da73b5070096de72430a@group.calendar.google.com';
+
+/* 이벤트 제목 키워드로 색상 자동 매핑 */
+function colorForTitle(title) {
+  if (!title) return '#9DA6BC';
+  const t = title.toLowerCase();
+  if (t.includes('초급') || t.includes('2.5d')) return '#3A6FE8';
+  if (t.includes('스위스') || t.includes('swiss')) return '#6B47C8';
+  if (t.includes('중급') || t.includes('3d'))   return '#1A4FC4';
+  return '#9DA6BC'; /* 기타 이벤트 */
+}
+
+/* 가져온 이벤트 캐시 (월 단위) */
+const eventsCache = {}; /* key: "YYYY-MM" → Promise */
+let EVENTS = [];        /* 현재 표시 중인 이벤트 배열 */
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+/* Google Calendar API 호출 – 해당 월의 첫날~마지막날 */
+async function fetchGCalEvents(year, month) {
+  const cacheKey = `${year}-${pad(month+1)}`;
+  if (eventsCache[cacheKey]) return eventsCache[cacheKey];
+
+  const timeMin = new Date(year, month, 1).toISOString();
+  const timeMax = new Date(year, month+1, 0, 23, 59, 59).toISOString();
+  const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GCAL_CAL_ID)}/events`
+    + `?key=${GCAL_API_KEY}`
+    + `&timeMin=${encodeURIComponent(timeMin)}`
+    + `&timeMax=${encodeURIComponent(timeMax)}`
+    + `&singleEvents=true`
+    + `&orderBy=startTime`
+    + `&maxResults=100`;
+
+  const promise = fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.items) return [];
+      return data.items.map(item => {
+        /* 종일 이벤트: start.date / 시간 지정 이벤트: start.dateTime */
+        const rawDate = item.start.date || item.start.dateTime.slice(0, 10);
+        const title   = item.summary || '(제목 없음)';
+        return { date: rawDate, title, color: colorForTitle(title) };
+      });
+    })
+    .catch(() => []);
+
+  eventsCache[cacheKey] = promise;
+  return promise;
+}
 
 const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 let cy, cm;
 
-function initCalendar() {
+async function initCalendar() {
   const now = new Date();
   cy = now.getFullYear(); cm = now.getMonth();
-  renderCalendar();
+  await loadAndRender();
 }
 
-function changeMonth(d) {
+async function changeMonth(d) {
   cm += d;
   if (cm > 11) { cm = 0; cy++; }
   if (cm < 0)  { cm = 11; cy--; }
-  renderCalendar();
+  await loadAndRender();
   setTimeout(sendHeight, 100);
 }
 
-function pad(n){ return String(n).padStart(2,'0'); }
+/* 로딩 상태 표시 후 API 호출 → 렌더 */
+async function loadAndRender() {
+  document.getElementById('cal-month-label').textContent = `${cy}년 ${MONTHS[cm]}`;
+  document.getElementById('cal-body').innerHTML =
+    `<div style="grid-column:1/-1;padding:24px;text-align:center;font-size:13px;color:var(--t3)">일정을 불러오는 중…</div>`;
+
+  EVENTS = await fetchGCalEvents(cy, cm);
+  renderCalendar();
+}
 
 function renderCalendar() {
   document.getElementById('cal-month-label').textContent = `${cy}년 ${MONTHS[cm]}`;
-  const today = new Date();
+  const today    = new Date();
   const firstDay = new Date(cy, cm, 1).getDay();
-  const daysInMonth = new Date(cy, cm+1, 0).getDate();
-  const ms = `${cy}-${pad(cm+1)}`;
-  const mev = EVENTS.filter(e => e.date.startsWith(ms));
+  const daysInM  = new Date(cy, cm+1, 0).getDate();
+  const ms       = `${cy}-${pad(cm+1)}`;
+  const mev      = EVENTS.filter(e => e.date.startsWith(ms));
 
   let html = '';
-  for (let i=0;i<firstDay;i++) html += `<div class="cal-day empty"></div>`;
-  for (let d=1;d<=daysInMonth;d++) {
-    const ds = `${cy}-${pad(cm+1)}-${pad(d)}`;
+  for (let i=0; i<firstDay; i++) html += `<div class="cal-day empty"></div>`;
+  for (let d=1; d<=daysInM; d++) {
+    const ds     = `${cy}-${pad(cm+1)}-${pad(d)}`;
     const isToday = today.getFullYear()===cy && today.getMonth()===cm && today.getDate()===d;
-    const evs = mev.filter(e=>e.date===ds);
-    const evHtml = evs.map(e=>`<div class="cal-event" style="background:${e.color}22;color:${e.color}">${e.title}</div>`).join('');
+    const evs    = mev.filter(e => e.date===ds);
+    const evHtml = evs.map(e =>
+      `<div class="cal-event" style="background:${e.color}22;color:${e.color}">${e.title}</div>`
+    ).join('');
     html += `<div class="cal-day${isToday?' today':''}"><div class="day-num">${d}</div>${evHtml}</div>`;
   }
   document.getElementById('cal-body').innerHTML = html;
+  setTimeout(sendHeight, 100);
 }
 
 initCalendar();
 window.addEventListener('load', sendHeight);
 window.addEventListener('resize', sendHeight);
-
-// ResizeObserver로 콘텐츠 높이 변화 감지 (FAQ 열림/닫힘 등)
-if (window.ResizeObserver) {
-  new ResizeObserver(() => sendHeight()).observe(document.body);
-}
 </script>
 </body>
 </html>
